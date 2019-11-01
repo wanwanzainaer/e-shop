@@ -39,15 +39,8 @@ const Directory = () => {
   const [state, setState] = useState({ sections: sections });
   return (
     <div className="directory-menu">
-      {state.sections.map(({ title, id, imageUrl, size }) => {
-        return (
-          <MenuItem
-            key={id}
-            title={title}
-            imageUrl={imageUrl}
-            size={size}
-          />
-        );
+      {state.sections.map(({ id, ...sectionProps }) => {
+        return <MenuItem key={id} {...sectionProps} />;
       })}
     </div>
   );
