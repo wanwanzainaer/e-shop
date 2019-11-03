@@ -36,7 +36,7 @@ const sections = [
   }
 ];
 const Directory = () => {
-  const [state, setState] = useState({ sections: sections });
+  const [state] = useState({ sections: sections });
   return (
     <div className="directory-menu">
       {state.sections.map(({ id, ...sectionProps }) => {
