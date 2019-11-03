@@ -3,12 +3,24 @@ import FormInput from "../form-input/FormInput";
 import "./Sign-in.scss";
 import CustomButton from "../custom-button/CustomButton";
 import { signInWithGoogle } from "../../firebase/firebase.utils";
+import {
+  auth,
+  createUserProfileDocument
+} from "../../firebase/firebase.utils";
+
 const SignIn = () => {
   const [state, setState] = useState({ email: "", password: "" });
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setState({ email: "", password: "" });
+
+    const { email, password } = state;
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      setState({ email: "", password: "" });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChange = e => {
@@ -38,10 +50,12 @@ const SignIn = () => {
           label="Password"
           autoComplete="off"
         />
-        <CustomButton type="submit">Sign In</CustomButton>
-        <CustomButton onClick={signInWithGoogle}>
-          Sign in with Google
-        </CustomButton>
+        <div className="buttons">
+          <CustomButton type="submit">Sign In</CustomButton>
+          <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+            Sign in with Google
+          </CustomButton>
+        </div>
       </form>
     </div>
   );
