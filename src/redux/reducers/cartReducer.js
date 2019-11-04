@@ -14,6 +14,7 @@ export default (state = INITIAL_STATE, action) => {
         hidden: !state.hidden
       };
     case Types.ADD_ITEM:
+      console.log(addItemToCart(state.cartItems, action.payload));
       return {
         ...state,
         cartItems: addItemToCart(state.cartItems, action.payload)
