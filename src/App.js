@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { setCurrentUser } from "./redux/actions/userAction";
 import Home from "./pages/homepages/Home";
 import Shop from "./pages/shop/Shop";
 import Header from "./components/header/Header";
@@ -11,7 +13,7 @@ import {
 } from "./firebase/firebase.utils";
 
 import "./App.css";
-function App() {
+function App({ setCurrentUser, currentUser }) {
   const [state, setState] = useState({ currentUser: null });
   useEffect(() => {
     let unsub = auth.onAuthStateChanged(async userAuth => {
@@ -19,11 +21,9 @@ function App() {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapShot => {
           console.log(snapShot);
-          setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data()
-            }
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()
           });
         });
       } else {
@@ -33,18 +33,35 @@ function App() {
     return function cleanUp() {
       unsub();
     };
-  }, []);
+  }, [setCurrentUser]);
   return (
     <div>
-      <Header currentUser={state.currentUser} />
+      <Header />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/shop" component={Shop} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/signin" component={SignIn} />
+        <Route
+          path="/signup"
+          render={() =>
+            currentUser ? <Redirect to="/" /> : <Signup />
+          }
+        />
+        <Route
+          path="/signin"
+          render={() =>
+            currentUser ? <Redirect to="/" /> : <SignIn />
+          }
+        />
       </Switch>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+});
+
+export default connect(
+  mapStateToProps,
+  { setCurrentUser }
+)(App);
