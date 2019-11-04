@@ -9,6 +9,7 @@ import Shop from "./pages/shop/Shop";
 import Header from "./components/header/Header";
 import Signup from "./components/sign-up/Sign-up";
 import SignIn from "./components/sign-in/Sign-in";
+import CheckOut from "./pages/checkout/CheckOut";
 import { selectCurrentUser } from "./redux/selectors/user.selectors";
 import {
   auth,
@@ -23,7 +24,6 @@ function App({ setCurrentUser, currentUser }) {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapShot => {
-          console.log(snapShot);
           setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
@@ -55,6 +55,7 @@ function App({ setCurrentUser, currentUser }) {
             currentUser ? <Redirect to="/" /> : <SignIn />
           }
         />
+        <Route exact path="/checkout" component={CheckOut} />
       </Switch>
     </div>
   );
