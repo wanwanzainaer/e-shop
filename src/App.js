@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/actions/userAction";
+import { createStructuredSelector } from "reselect";
+
 import Home from "./pages/homepages/Home";
 import Shop from "./pages/shop/Shop";
 import Header from "./components/header/Header";
 import Signup from "./components/sign-up/Sign-up";
 import SignIn from "./components/sign-in/Sign-in";
+import { selectCurrentUser } from "./redux/selectors/user.selectors";
 import {
   auth,
   createUserProfileDocument
@@ -57,8 +60,8 @@ function App({ setCurrentUser, currentUser }) {
   );
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 });
 
 export default connect(
