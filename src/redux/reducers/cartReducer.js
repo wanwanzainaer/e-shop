@@ -1,5 +1,8 @@
 import Types from "../actions/types";
-import { addItemToCart } from "../reducers/cart.urils";
+import {
+  addItemToCart,
+  removeItemFromCart
+} from "../reducers/cart.urils";
 
 const INITIAL_STATE = {
   hidden: true,
@@ -17,6 +20,18 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: addItemToCart(state.cartItems, action.payload)
+      };
+    case Types.CLEAR_ITEM_FROM_CART:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(
+          cartItem => cartItem.id !== action.payload.id
+        )
+      };
+    case Types.REMOVE_ITEM:
+      return {
+        ...state,
+        cartItems: removeItemFromCart(state.cartItems, action.payload)
       };
     default:
       return state;

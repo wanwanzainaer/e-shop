@@ -4,9 +4,20 @@ export const toggleCartHidden = () => {
   return { type: Types.TOGGLE_CART_HIDDEN };
 };
 
-export const addItem = Item => {
+export const addItem = item => {
   return {
     type: Types.ADD_ITEM,
-    payload: Item
+    payload: item
+  };
+};
+
+export const clearItemFromCart = item => {
+  return { type: Types.CLEAR_ITEM_FROM_CART, payload: item };
+};
+
+export const removeItem = item => {
+  return {
+    type: Types.REMOVE_ITEM,
+    payload: item
   };
 };
