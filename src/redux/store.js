@@ -10,7 +10,7 @@ const middlewares = [logger];
 export const store = createStore(
   reducer,
   {},
-  composeEnhancers(applyMiddleware(...middlewares))
+  composeEnhancers(applyMiddleware())
 );
 
 export const persistor = persistStore(store);

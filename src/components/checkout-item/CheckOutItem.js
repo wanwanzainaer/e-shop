@@ -8,7 +8,6 @@ import {
 } from "../../redux/actions/cartAction";
 
 import "./CheckOutItem.scss";
-import CartItem from "../cart-item/CartItem";
 
 const CheckOutItem = ({
   cartItem,
