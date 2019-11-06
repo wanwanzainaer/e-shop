@@ -3,10 +3,7 @@ import FormInput from "../form-input/FormInput";
 import "./Sign-in.scss";
 import CustomButton from "../custom-button/CustomButton";
 import { signInWithGoogle } from "../../firebase/firebase.utils";
-import {
-  auth,
-  createUserProfileDocument
-} from "../../firebase/firebase.utils";
+import { auth } from "../../firebase/firebase.utils";
 
 const SignIn = () => {
   const [state, setState] = useState({ email: "", password: "" });
