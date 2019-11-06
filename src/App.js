@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/actions/userAction";
@@ -18,7 +18,6 @@ import {
 
 import "./App.css";
 function App({ setCurrentUser, currentUser }) {
-  const [state, setState] = useState({ currentUser: null });
   useEffect(() => {
     let unsub = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -30,7 +29,6 @@ function App({ setCurrentUser, currentUser }) {
           });
         });
       } else {
-        setState({ currentUser: userAuth });
       }
     });
     return function cleanUp() {
