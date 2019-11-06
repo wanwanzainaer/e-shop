@@ -14,10 +14,13 @@ import { selectCurrentUser } from "./redux/selectors/user.selectors";
 import {
   auth,
   createUserProfileDocument
+  // addCollectionAndDocuments
 } from "./firebase/firebase.utils";
 
+import { selectCollectionsForPreview } from "./redux/selectors/shop.selectors";
+
 import "./App.css";
-function App({ setCurrentUser, currentUser }) {
+function App({ setCurrentUser, currentUser, collectionsArray }) {
   useEffect(() => {
     let unsub = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -28,8 +31,12 @@ function App({ setCurrentUser, currentUser }) {
             ...snapShot.data()
           });
         });
-      } else {
       }
+      setCurrentUser({ userAuth });
+      // addCollectionAndDocuments(
+      //   "collections",
+      //   collectionsArray.map(({ title, items }) => ({ title, items }))
+      // );
     });
     return function cleanUp() {
       unsub();
@@ -60,7 +67,8 @@ function App({ setCurrentUser, currentUser }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview
 });
 
 export default connect(
