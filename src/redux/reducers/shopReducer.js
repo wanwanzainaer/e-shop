@@ -1,7 +1,6 @@
-import SHOP_DATA from "../../pages/shop/shop_data";
 import Types from "../actions/types";
 const INITIAL_STATE = {
-  collections: SHOP_DATA
+  collections: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
