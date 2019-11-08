@@ -9,6 +9,7 @@ const WithSpinner = WrapedComponent => ({
   isLoading,
   ...otherProps
 }) => {
+  console.log(isLoading);
   return isLoading ? (
     <SpinnerOverlay>
       <SpinnerContainer />
