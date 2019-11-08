@@ -15,17 +15,24 @@ const Shop = ({ match, updateCollectionsData }) => {
   const [state, setState] = useState({ loading: true });
   useEffect(() => {
     const collectionRef = firestore.collection("collections");
-    let unsub = collectionRef.onSnapshot(async snapshot => {
+
+    collectionRef.get().then(snapshot => {
       const collectionMap = convertCollectionsSnapshotToMap(snapshot);
       updateCollectionsData(collectionMap);
       setState({ loading: false });
     });
-    return function cleanUp() {
-      unsub();
-    };
+
+    // Google firebase Observable pattern
+    // let unsub = collectionRef.onSnapshot(async snapshot => {
+    //   const collectionMap = convertCollectionsSnapshotToMap(snapshot);
+    //   updateCollectionsData(collectionMap);
+    //   setState({ loading: false });
+    // });
+    // return function cleanUp() {
+    //   unsub();
+    // };
   }, [updateCollectionsData]);
 
-  console.log(match);
   return (
     <div className="shop-page">
       <Route
