@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { setCurrentUser } from "./redux/actions/userAction";
+import { checkUserSession } from "./redux/actions/userAction";
 import { createStructuredSelector } from "reselect";
 
 import Home from "./pages/homepages/Home";
@@ -11,37 +11,14 @@ import Signup from "./components/sign-up/Sign-up";
 import SignIn from "./components/sign-in/Sign-in";
 import CheckOut from "./pages/checkout/CheckOut";
 import { selectCurrentUser } from "./redux/selectors/user.selectors";
-import {
-  auth,
-  createUserProfileDocument
-  // addCollectionAndDocuments
-} from "./firebase/firebase.utils";
 
 import { selectCollectionsForPreview } from "./redux/selectors/shop.selectors";
 
 import "./App.css";
-function App({ setCurrentUser, currentUser, collectionsArray }) {
+function App({ currentUser, checkUserSession }) {
   useEffect(() => {
-    let unsub = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });
-        });
-      }
-      setCurrentUser({ userAuth });
-      // addCollectionAndDocuments(
-      //   "collections",
-      //   collectionsArray.map(({ title, items }) => ({ title, items }))
-      // );
-    });
-    return function cleanUp() {
-      unsub();
-    };
-  }, [setCurrentUser]);
+    checkUserSession();
+  }, [checkUserSession]);
   return (
     <div>
       <Header />
@@ -73,5 +50,5 @@ const mapStateToProps = createStructuredSelector({
 
 export default connect(
   mapStateToProps,
-  { setCurrentUser }
+  { checkUserSession }
 )(App);
