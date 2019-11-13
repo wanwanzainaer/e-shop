@@ -6,13 +6,13 @@ import CollectionContainer from "../../pages/collection/CollectionContainer";
 import CollectionOverviewContainer from "../../components/collection-overview/CollectionOverviewContainer";
 // import CollectionOverview from "../../components/collection-overview/CollectionOverview";
 
-import { fetchCollectionsStartAsync } from "../../redux/actions/shopAction";
+import { fetchCollectionsStart } from "../../redux/actions/shopAction";
 
 // const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview);
 // const CollectionPageWithSpinner = WithSpinner(Collection);
-const Shop = ({ match, fetchCollectionsStartAsync, isloading }) => {
+const Shop = ({ match, fetchCollectionsStart }) => {
   useEffect(() => {
-    fetchCollectionsStartAsync();
+    fetchCollectionsStart();
     // Google firebase Observable pattern
     // let unsub = collectionRef.onSnapshot(async snapshot => {
     //   const collectionMap = convertCollectionsSnapshotToMap(snapshot);
@@ -22,7 +22,7 @@ const Shop = ({ match, fetchCollectionsStartAsync, isloading }) => {
     // return function cleanUp() {
     //   unsub();
     // };
-  }, [fetchCollectionsStartAsync]);
+  }, [fetchCollectionsStart]);
 
   return (
     <div className="shop-page">
@@ -42,7 +42,10 @@ const Shop = ({ match, fetchCollectionsStartAsync, isloading }) => {
 //   isloading: selectIsCollectionFetching
 // });
 
+const mapDispatchToProps = dispatch => ({
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
+});
 export default connect(
   null,
-  { fetchCollectionsStartAsync }
+  mapDispatchToProps
 )(Shop);
