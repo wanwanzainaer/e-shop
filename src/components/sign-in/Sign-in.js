@@ -20,7 +20,7 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
 
   const handleChange = e => {
     const { value, name } = e.target;
-    setState(s => ({ ...s, [name]: value }));
+    setState(state => ({ ...state, [name]: value }));
   };
   return (
     <div className="sign-in">
@@ -60,7 +60,4 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
   );
 };
 
-export default connect(
-  null,
-  { googleSignInStart, emailSignInStart }
-)(SignIn);
+export default connect(null, { googleSignInStart, emailSignInStart })(SignIn);

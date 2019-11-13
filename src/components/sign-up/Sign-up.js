@@ -12,6 +12,7 @@ const SignUp = ({ signUpStart }) => {
     password: "",
     confirmPassword: ""
   });
+
   const handleSubmit = async e => {
     e.preventDefault();
     const { displayName, password, confirmPassword, email } = state;
@@ -24,7 +25,7 @@ const SignUp = ({ signUpStart }) => {
 
   const handleChange = e => {
     const { value, name } = e.target;
-    setState(s => ({ ...s, [name]: value }));
+    setState(state => ({ ...state, [name]: value }));
   };
   return (
     <div className="sign-up" onSubmit={handleSubmit}>
@@ -73,7 +74,4 @@ const SignUp = ({ signUpStart }) => {
   );
 };
 
-export default connect(
-  null,
-  { signUpStart }
-)(SignUp);
+export default connect(null, { signUpStart })(SignUp);
