@@ -1,40 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
+import { fetchCollectionsStart } from "../../redux/actions/shopAction";
+import Spinner from "../../components/spinner/Spinner";
 
-import CollectionContainer from "../../pages/collection/CollectionContainer";
-import CollectionOverviewContainer from "../../components/collection-overview/CollectionOverviewContainer";
+const CollectionContainer = lazy(() =>
+  import("../../pages/collection/CollectionContainer")
+);
+const CollectionOverviewContainer = lazy(() =>
+  import("../../components/collection-overview/CollectionOverviewContainer")
+);
 // import CollectionOverview from "../../components/collection-overview/CollectionOverview";
 
-import { fetchCollectionsStart } from "../../redux/actions/shopAction";
-
-// const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview);
-// const CollectionPageWithSpinner = WithSpinner(Collection);
 const Shop = ({ match, fetchCollectionsStart }) => {
   useEffect(() => {
     fetchCollectionsStart();
-    // Google firebase Observable pattern
-    // let unsub = collectionRef.onSnapshot(async snapshot => {
-    //   const collectionMap = convertCollectionsSnapshotToMap(snapshot);
-    //   updateCollectionsData(collectionMap);
-    //   setState({ loading: false });
-    // });
-    // return function cleanUp() {
-    //   unsub();
-    // };
   }, [fetchCollectionsStart]);
 
   return (
     <div className="shop-page">
-      <Route
-        exact
-        path={`${match.path}`}
-        component={CollectionOverviewContainer}
-      />
-      <Route
-        path={`${match.path}/:collectionId`}
-        component={CollectionContainer}
-      />
+      <Suspense fallback={<Spinner />}>
+        <Route
+          exact
+          path={`${match.path}`}
+          component={CollectionOverviewContainer}
+        />
+        <Route
+          path={`${match.path}/:collectionId`}
+          component={CollectionContainer}
+        />
+      </Suspense>
     </div>
   );
 };
@@ -45,7 +40,4 @@ const Shop = ({ match, fetchCollectionsStart }) => {
 const mapDispatchToProps = dispatch => ({
   fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
 });
-export default connect(
-  null,
-  mapDispatchToProps
-)(Shop);
+export default connect(null, mapDispatchToProps)(Shop);
