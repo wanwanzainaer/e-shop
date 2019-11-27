@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const compression = require("compression");
+const enforce = require("express-sslify");
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -13,7 +14,7 @@ const port = process.env.PORT || 5000;
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extends: true }));
-
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(cors());
 
 if (process.env.NODE_ENV === "production") {
@@ -23,6 +24,9 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+app.get("/service-worker.js", (req, res) => {
+  res.send(path.resolve(__dirname, "..", "build", "service-worker.js"));
+});
 app.post("/payment", (req, res) => {
   const body = {
     source: req.body.token.id,
